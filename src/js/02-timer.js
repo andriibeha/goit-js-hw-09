@@ -1,8 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
-const DATA_DELAY = 1000;
-
 const refs = {
     dataPickerBtn: document.querySelector('#datetime-picker'),
     startBtn: document.querySelector('button[data-start]'),
@@ -12,10 +10,18 @@ const refs = {
     seconds: document.querySelector('span[data-seconds]'),
 };
 
+const DATA_DELAY = 1000;
 let dateDiference = null;
 let timerId = null;
+
 refs.startBtn.disabled = true;
 
+//Створення flatpickr
+flatpickr(refs.dataPickerBtn, options);
+
+refs.startBtn.addEventListener('click', timeLeft)
+
+//Опції для бібліотеки flatpickr
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -23,52 +29,54 @@ const options = {
     minuteIncrement: 1,
     onClose(selectedDates) {
         let dateNow = new Date;
+        
         dateDiference = selectedDates[0] - dateNow;
     
         if (selectedDates[0] < dateNow) {
             refs.startBtn.disabled = true;
+
             window.alert("Please choose a date in the future");
-        } else { 
+        }
+        else { 
             refs.startBtn.disabled = false;
         };
   },
 };
 
-flatpickr(refs.dataPickerBtn, options);
 
 
-refs.startBtn.addEventListener('click', timeLeft)
-
+//Відлік часу до кінця таймеру 
 function timeLeft() { 
     timerId = setInterval(() => {
         let dateDiferenceInMs = convertMs(dateDiference);
 
-        dateTimerContent(dateDiferenceInMs);
+        dateTimerTextContent(dateDiferenceInMs);
 
-        dateDiference = dateDiference - DATA_DELAY;
+        dateDiference = dateDiference - 1000;
         
-        if (dateDiference < 1005) { 
+        if (dateDiference <= 0) { 
             clearInterval(timerId);
             
             refs.seconds.textContent = '00';
         };
-
+        
     }, DATA_DELAY);
-
 };
 
-
-function dateTimerContent({seconds, minutes, hours, days}) {
+//Відображення часу до кінця таймера на сторінці 
+function dateTimerTextContent({seconds, minutes, hours, days}) {
     refs.seconds.textContent = pad(seconds) ;
     refs.minutes.textContent = pad(minutes);
     refs.hours.textContent = pad(hours);
     refs.days.textContent = pad(days);
 };
 
+//Результат => число 1 буде записане як 01, 12 буде записане як 12 
 function pad(value) {
     return String(value).padStart(2, '0');
 };
 
+//Перетворення мілісекунд(ms) в дні години хвилини секунди
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -88,5 +96,4 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 };
 
-/* console.log(convertMs(2000));  */
 
