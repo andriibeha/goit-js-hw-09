@@ -16,11 +16,6 @@ let timerId = null;
 
 refs.startBtn.disabled = true;
 
-//Створення flatpickr
-flatpickr(refs.dataPickerBtn, options);
-
-refs.startBtn.addEventListener('click', timeLeft)
-
 //Опції для бібліотеки flatpickr
 const options = {
   enableTime: true,
@@ -43,6 +38,10 @@ const options = {
   },
 };
 
+//Створення flatpickr
+flatpickr(refs.dataPickerBtn, options);
+
+refs.startBtn.addEventListener('click', timeLeft)
 
 
 //Відлік часу до кінця таймеру 
