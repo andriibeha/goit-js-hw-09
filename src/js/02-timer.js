@@ -9,6 +9,10 @@ const refs = {
     hours: document.querySelector('span[data-hours]'),
     minutes: document.querySelector('span[data-minutes]'),
     seconds: document.querySelector('span[data-seconds]'),
+    //Selector for style 
+    allLabel: document.querySelectorAll('.label'),
+    allSpan: document.querySelectorAll('.value'),
+    timerWraper: document.querySelector('.timer'),
 };
 
 const DATA_DELAY = 1000;
@@ -98,4 +102,12 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 };
 
+//Style 
+refs.dataPickerBtn.style.marginBottom = "25px";
+refs.timerWraper.style.display = "flex";
 
+refs.allSpan.forEach(el => el.style.fontSize = "30px");
+refs.allSpan.forEach(el => el.style.marginRight = "10px");
+
+refs.allLabel.forEach(el => el.style.fontSize = "22px");
+refs.allLabel.forEach(el => el.style.marginRight = "20px");
